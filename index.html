@@ -173,35 +173,32 @@
             <p>Vui lòng đăng nhập để tiếp tục</p>
         </div>
 
-        <form action="#" method="POST">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <div class="input-wrapper">
-                    <input type="email" id="email" placeholder="vidu@gmail.com" required>
-                </div>
-            </div>
+        <form id="loginForm" method="GET">
+    <script>
+        // Khi trang web tải xong
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Tìm địa chỉ IP của Router trong đường dẫn (thường là biến 'q' hoặc 'target' tùy hãng)
+            // Ví dụ này dành cho các dòng phổ biến, nó sẽ giữ lại các tham số cần thiết
+            const form = document.getElementById('loginForm');
+            
+            // Lấy tất cả tham số router gửi sang và biến nó thành input ẩn để gửi ngược lại
+            params.forEach((value, key) => {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            });
 
-            <div class="input-group">
-                <label for="password">Mật khẩu</label>
-                <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="Nhập mật khẩu" required>
-                    <i class="fa-solid fa-eye-slash toggle-password" id="togglePassword"></i>
-                </div>
-            </div>
-
-            <div class="actions">
-                <label class="remember-me">
-                    <input type="checkbox"> Ghi nhớ tôi
-                </label>
-                <a href="#" class="forgot-pass">Quên mật khẩu?</a>
-            </div>
-
-            <button type="submit" class="btn-login">Đăng nhập</button>
-
-            <div class="register-link">
-                Bạn chưa có tài khoản? <a href="#">Đăng ký ngay</a>
-            </div>
-        </form>
+            // QUAN TRỌNG: Bạn cần xem tài liệu Router của bạn yêu cầu submit về đâu.
+            // Ví dụ thông thường: http://<IP_Router>/login
+            // Nếu Router tự động chuyển hướng, bạn có thể không cần sửa action, 
+            // nhưng nếu cần login Local, bạn có thể cần trỏ về IP Gateway.
+        });
+    </script>
+</form>
     </div>
 
     <script>
@@ -221,4 +218,5 @@
     </script>
 
 </body>
+
 </html>
