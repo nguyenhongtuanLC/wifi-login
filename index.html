@@ -173,17 +173,15 @@
             <p>Vui lòng đăng nhập để tiếp tục</p>
         </div>
 
-        <form id="loginForm" method="GET">
+        <form id="loginForm" method="POST">
+    <button type="submit">Kết nối Internet</button>
+
     <script>
-        // Khi trang web tải xong
         document.addEventListener("DOMContentLoaded", function() {
             const params = new URLSearchParams(window.location.search);
-            
-            // Tìm địa chỉ IP của Router trong đường dẫn (thường là biến 'q' hoặc 'target' tùy hãng)
-            // Ví dụ này dành cho các dòng phổ biến, nó sẽ giữ lại các tham số cần thiết
             const form = document.getElementById('loginForm');
-            
-            // Lấy tất cả tham số router gửi sang và biến nó thành input ẩn để gửi ngược lại
+
+            // 1. Lấy thông tin router gửi sang và tạo input ẩn (Giữ nguyên logic của bạn)
             params.forEach((value, key) => {
                 const input = document.createElement("input");
                 input.type = "hidden";
@@ -192,10 +190,31 @@
                 form.appendChild(input);
             });
 
-            // QUAN TRỌNG: Bạn cần xem tài liệu Router của bạn yêu cầu submit về đâu.
-            // Ví dụ thông thường: http://<IP_Router>/login
-            // Nếu Router tự động chuyển hướng, bạn có thể không cần sửa action, 
-            // nhưng nếu cần login Local, bạn có thể cần trỏ về IP Gateway.
+            // 2. PHẦN QUAN TRỌNG NHẤT: XÁC ĐỊNH ĐÍCH ĐẾN (ACTION)
+            // TP-Link thường gửi tham số 'target' hoặc ta phải gửi về IP Gateway
+            
+            // Cách A: Nếu router gửi kèm link đích (thường là biến 'target' hoặc 'loginUrl')
+            let targetUrl = params.get('target') || params.get('loginUrl');
+
+            // Cách B: Dành riêng cho TP-Link Omada (tự động ghép link dựa trên Gateway Address)
+            // Nếu không tìm thấy target, thử tìm gatewayAddress
+            if (!targetUrl && params.get('gatewayAddress')) {
+                const gatewayIP = params.get('gatewayAddress');
+                const clientMac = params.get('clientMac');
+                // Cấu trúc URL login phổ biến của TP-Link Omada Controller
+                targetUrl = `http://${gatewayIP}:8088/portal/auth`; 
+            }
+
+            // Nếu tìm được đích thì gán vào form, nếu không thì báo lỗi hoặc gán IP tĩnh
+            if (targetUrl) {
+                form.action = targetUrl;
+                console.log("Đã gán form action về: " + targetUrl);
+            } else {
+                // TRƯỜNG HỢP DỰ PHÒNG: Gán cứng IP Router/Controller của bạn
+                // Hãy thay dòng dưới bằng IP thực tế nếu code trên không tự bắt được
+                // form.action = "http://192.168.0.1:8088/portal/auth"; 
+                console.warn("Không tìm thấy địa chỉ Gateway tự động.");
+            }
         });
     </script>
 </form>
@@ -220,3 +239,4 @@
 </body>
 
 </html>
+
