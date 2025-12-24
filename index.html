@@ -3,240 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập | Website của bạn</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Chào mừng quý khách</title>
     <style>
-        /* 1. CẤU HÌNH CƠ BẢN */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .container { background: white; max-width: 400px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #333; }
+        
+        /* Khung video responsive */
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: 20px;
+        }
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            /* Hình nền gradient đẹp mắt */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* Nút kết nối (ban đầu ẩn đi) */
+        #connectBtn {
+            display: none; /* Ẩn nút lúc đầu */
+            background: #28a745; color: white; border: none;
+            padding: 15px 30px; font-size: 18px; border-radius: 5px;
+            cursor: pointer; width: 100%;
         }
-
-        /* 2. KHUNG ĐĂNG NHẬP (CARD) */
-        .login-container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px; /* Độ rộng tối đa */
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h2 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* 3. CÁC Ô NHẬP LIỆU */
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .input-wrapper {
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            padding-right: 40px; /* Chừa chỗ cho icon mắt */
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-            outline: none;
-        }
-
-        .input-group input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        /* Icon con mắt ẩn/hiện mật khẩu */
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #888;
-        }
-
-        .toggle-password:hover {
-            color: #667eea;
-        }
-
-        /* 4. TIỆN ÍCH (Quên MK, Ghi nhớ) */
-        .actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .forgot-pass {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .forgot-pass:hover {
-            text-decoration: underline;
-        }
-
-        /* 5. NÚT BẤM */
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(to right, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .register-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* Responsive cho màn hình nhỏ */
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 20px;
-                width: 90%;
-            }
-        }
+        #connectBtn:hover { background: #218838; }
+        .timer { color: #666; font-size: 14px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Xin chào!</h2>
-            <p>Vui lòng đăng nhập để tiếp tục</p>
-        </div>
-
-        <form id="loginForm" method="POST">
-    <button type="submit">Kết nối Internet</button>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const params = new URLSearchParams(window.location.search);
-            const form = document.getElementById('loginForm');
-
-            // 1. Lấy thông tin router gửi sang và tạo input ẩn (Giữ nguyên logic của bạn)
-            params.forEach((value, key) => {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
-            });
-
-            // 2. PHẦN QUAN TRỌNG NHẤT: XÁC ĐỊNH ĐÍCH ĐẾN (ACTION)
-            // TP-Link thường gửi tham số 'target' hoặc ta phải gửi về IP Gateway
-            
-            // Cách A: Nếu router gửi kèm link đích (thường là biến 'target' hoặc 'loginUrl')
-            let targetUrl = params.get('target') || params.get('loginUrl');
-
-            // Cách B: Dành riêng cho TP-Link Omada (tự động ghép link dựa trên Gateway Address)
-            // Nếu không tìm thấy target, thử tìm gatewayAddress
-            if (!targetUrl && params.get('gatewayAddress')) {
-                const gatewayIP = params.get('gatewayAddress');
-                const clientMac = params.get('clientMac');
-                // Cấu trúc URL login phổ biến của TP-Link Omada Controller
-                targetUrl = `http://${gatewayIP}:8088/portal/auth`; 
-            }
-
-            // Nếu tìm được đích thì gán vào form, nếu không thì báo lỗi hoặc gán IP tĩnh
-            if (targetUrl) {
-                form.action = targetUrl;
-                console.log("Đã gán form action về: " + targetUrl);
-            } else {
-                // TRƯỜNG HỢP DỰ PHÒNG: Gán cứng IP Router/Controller của bạn
-                // Hãy thay dòng dưới bằng IP thực tế nếu code trên không tự bắt được
-                // form.action = "http://192.168.0.1:8088/portal/auth"; 
-                console.warn("Không tìm thấy địa chỉ Gateway tự động.");
-            }
-        });
-    </script>
-</form>
+<div class="container">
+    <h2>Vui lòng xem Video để kết nối WiFi</h2>
+    
+    <div class="video-container">
+    <iframe width="560" height="315" 
+        /* CHÚ Ý: Dòng dưới đây thêm ?autoplay=1&mute=1 */
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&controls=1&rel=0" 
+        title="YouTube video player" 
+        frameborder="0" 
+        /* Thêm thuộc tính allow autoplay */
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+    </iframe>
+</div>
     </div>
 
-    <script>
-        // Xử lý ẩn/hiện mật khẩu
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+    <div class="timer" id="message">Nút kết nối sẽ hiện sau vài giây...</div>
 
-        togglePassword.addEventListener('click', function () {
-            // Kiểm tra loại input hiện tại
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            
-            // Đổi icon (Mắt mở / Mắt đóng)
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-    </script>
+    <form id="loginForm" method="POST">
+        <input type="hidden" name="username" value="wifi">
+        <input type="hidden" name="password" value="1234">
+        
+        <input type="hidden" name="clientMac" id="clientMac">
+        <input type="hidden" name="apMac" id="apMac">
+        <input type="hidden" name="gatewayMac" id="gatewayMac">
+        <input type="hidden" name="vid" id="vid">
+        
+        <button type="button" id="connectBtn" onclick="submitLogin()">KẾT NỐI INTERNET NGAY</button>
+    </form>
+</div>
+
+<script>
+    // 1. Cấu hình thời gian chờ (Giây)
+    const waitTime = 10; 
+
+    // 2. Logic đếm ngược và hiện nút
+    setTimeout(function() {
+        document.getElementById('connectBtn').style.display = 'block';
+        document.getElementById('message').style.display = 'none';
+    }, waitTime * 1000);
+
+    // 3. Logic xử lý Link Router
+    document.addEventListener("DOMContentLoaded", function() {
+        const params = new URLSearchParams(window.location.search);
+        
+        // Lấy các tham số từ URL Router gửi sang gán vào form
+        if(params.get('clientMac')) document.getElementById('clientMac').value = params.get('clientMac');
+        if(params.get('apMac')) document.getElementById('apMac').value = params.get('apMac');
+        if(params.get('gatewayMac')) document.getElementById('gatewayMac').value = params.get('gatewayMac');
+        if(params.get('vid')) document.getElementById('vid').value = params.get('vid');
+
+        // Xác định đích đến (Target URL) để submit form
+        // TP-Link Standalone thường gửi về biến 'target'
+        let targetUrl = params.get('target');
+        
+        // Nếu không có target, thử dùng cấu trúc mặc định của TP-Link
+        if (!targetUrl) {
+            // Mẹo: Nếu router gửi kèm Gateway IP
+            const gatewayIP = params.get('gatewayAddress') || params.get('ip'); 
+            if (gatewayIP) {
+                targetUrl = "http://" + gatewayIP + "/portal/auth";
+            } else {
+                // Đường dẫn mặc định của nhiều dòng TP-Link Router
+                targetUrl = "/portal/auth"; 
+            }
+        }
+        
+        const form = document.getElementById('loginForm');
+        form.action = targetUrl;
+    });
+
+    function submitLogin() {
+        document.getElementById('loginForm').submit();
+    }
+</script>
 
 </body>
-
 </html>
-
